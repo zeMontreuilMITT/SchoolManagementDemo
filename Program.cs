@@ -1,15 +1,30 @@
-﻿
-using SchoolManagementDemo;
-/// Create an OOP "Carpark" System
-/// At its most basic, the static CarPark class will have a private HashSet of Vehicles, and a method: public static void Park (Vehicle vehicle) method.
-/// Vehicles have a string LicenseNumber, and a string ParkingSpot
-/// Both should be private and validated with public properties
-/// 
-/// When the Park method is invoked, it adds the vehicle to the CarPark HashSet,  counts the vehicles in the HashSet, and uses that number to assign a spot.
-/// If 20 vehicles are parked, then the 21st vehicle parked is given spot 21.
-/// 
-/// It should prevent a vehicle from parking in more than one spot (if it already has a spot) or if the spots are over capacity.
-/// 
+﻿using SchoolManagementDemo;
 
-CarPark.Park(new Vehicle("A1A1A1"));
-CarPark.Park(new Vehicle("HONK"));
+// spot doesn't have a vehicle parked, doesn't belong to a carpark
+ParkingSpot newSpot = new ParkingSpot(6);
+CarPark newPark = new CarPark(10);
+Vehicle newVehicle = new Vehicle("A1A1A1");
+
+// add the new parking spot to the new carpark
+// currently, the carpark capacity has a value of int 10
+// readonly = cannot reassign
+// newPark.Capacity = 12; not allowed by compiler
+
+// ParkingSpots is a single reference to a hashset
+// because there is no set method on its property, it cannot be reassigned
+// newPark.ParkingSpots = new HashSet<ParkingSpot>(); not allowed by the compiler
+
+// not reassigning the field value
+// invoking a method on the field value
+// allowed by the get method
+// newPark.ParkingSpots.Clear(); allowed by the compiler
+
+// cannot access the parking spot list -- only add a new spot
+newPark.AddParkingSpot(newSpot);
+
+// count the number of spots to confirm that adding worked
+Console.WriteLine(newPark.GetParkingSpots().Count);
+
+newPark.GetParkingSpots().Clear();
+
+Console.WriteLine(newPark.GetParkingSpots().Count);

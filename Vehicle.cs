@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,32 +9,30 @@ namespace SchoolManagementDemo
 {
     public class Vehicle
     {
-        private string _licenseNumber;
-        public string LicenseNumber
+        // start with a private field with no accessors
+        private string _licenseNumber = "0000000";
+        // if find that we need to read the value, add a get method on a public Property
+        // readonly property: no set method
+        public string LicenseNumber { get { return _licenseNumber; } }
+        private void UpdateLicenseNumber(string licenseNumber)
         {
-            get { return _licenseNumber; }
-            set
+            // add all validations
+            // add whatever syntax or notes that make clear that this method should only be invoked under specific circumstances
+            if (licenseNumber.Length < 3 || licenseNumber.Length > 7 ||
+                !licenseNumber.All(c => Char.IsLetterOrDigit(c)))
             {
-                if(value.Length < 3 || value.Length > 7 || value.Contains(" "))
-                {
-                    throw new Exception("Plate must be alphanumeric between 3 and 7 characters");
-                }
-                else
-                {
-                    _licenseNumber = value;
-                }
+                throw new Exception("License number must be between 3 and 7 alphanumeric characters long.");
+            }
+            else
+            {
+                _licenseNumber = licenseNumber;
             }
         }
 
-        private string? _parkingSpot;
-        public string? ParkingSpot { 
-            get { return _parkingSpot; } 
-            set { _parkingSpot = value; }
-        }
+        private HashSet<ParkingSpot> _parkingSpots = new HashSet<ParkingSpot>();
         public Vehicle(string licenseNumber)
         {
-            LicenseNumber = licenseNumber;
+            UpdateLicenseNumber(licenseNumber);
         }
-
     }
 }

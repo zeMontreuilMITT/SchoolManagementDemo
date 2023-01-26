@@ -6,35 +6,57 @@ using System.Threading.Tasks;
 
 namespace SchoolManagementDemo
 {
-    public static class CarPark
+    public class CarPark
     {
-        private static HashSet<Vehicle> _vehicles = new HashSet<Vehicle>();
-        public static void Park(Vehicle vehicle)
+        private HashSet<ParkingSpot> _parkingSpots = new HashSet<ParkingSpot>();
+
+        // expose specific methods on the collection, not the entire collection
+        public void AddParkingSpot(ParkingSpot parkingSpot)
         {
-            if(_vehicles.Count >= Capacity)
+            _parkingSpots.Add(parkingSpot);
+        }
+
+        // expose a COPY of our list (not a reference)
+        public HashSet<ParkingSpot> GetParkingSpots()
+        {
+            HashSet<ParkingSpot> spotReferenceCopies;
+
+            // toHashSet returns a HashSet of Elements stored in a collection
+            // it does not return the original collection
+            spotReferenceCopies = _parkingSpots.ToHashSet();
+
+            // create a new hashset of the parking spots that is a copy of the original hashset, so that the original cannot be modified with this Get Method
+            return spotReferenceCopies;
+        }
+
+
+
+        private int _capacity;
+        public int Capacity { get { return _capacity; } }
+        private void _setCapacity(int newCapacity)
+        {
+            if (newCapacity > 0)
             {
-                throw new Exception("No remaining capacity in carpark");
-            } else if (vehicle.ParkingSpot != null)
-            {
-                throw new Exception($"Vehicle parked in spot {vehicle.ParkingSpot}");
+                _capacity = newCapacity;
             }
             else
             {
-                _vehicles.Add(vehicle);
-                vehicle.ParkingSpot = _spotCount.ToString();
-                _spotCount++;
-
-                Console.WriteLine($"Vehicle with license {vehicle.LicenseNumber} parking in spot {vehicle.ParkingSpot}");
-                Console.WriteLine($"{Capacity - _vehicles.Count} spots remaining.");
+                throw new Exception("Capacity must exceed 0");
             }
         }
-        public static int Capacity { get; }
-        private static int _spotCount = 1;
 
-        // static class constructor is invoked when the program runs
-        static CarPark()
+        private void _initializeEmptySpots()
         {
-            Capacity = 300;
+            for(int i = 1; i <= Capacity; i++)
+            {
+                _parkingSpots.Add(new ParkingSpot(i, this));
+            }
+        }
+        private int _spotCount = 1;
+        public CarPark(int capacity)
+        {
+            _setCapacity(capacity);
+            //_initializeEmptySpots();
         }
     }
 }
