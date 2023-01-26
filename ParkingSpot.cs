@@ -16,9 +16,14 @@ namespace SchoolManagementDemo
         private Vehicle _vehicle;
         private CarPark _carPark;
 
-        public CarPark CarPark { 
-            get { return _carPark; }
-            set { _carPark = value; } 
+        // exposes the CarPark object on the ParkingSpot
+        // but we have total control over what is exposed on the CarPark object itself
+        public CarPark CarPark { get { return _carPark; } }
+
+        // exposes the _carPark value to be set
+        public void SetCarPark(CarPark carPark)
+        {
+            _carPark = carPark;
         }
 
         public Vehicle Vehicle

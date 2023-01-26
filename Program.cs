@@ -25,6 +25,12 @@ newPark.AddParkingSpot(newSpot);
 // count the number of spots to confirm that adding worked
 Console.WriteLine(newPark.GetParkingSpots().Count);
 
-newPark.GetParkingSpots().Clear();
+// created a reference from one object to another that allows us to refer to objects by each other
+Console.WriteLine(newSpot.CarPark.GetParkingSpots().Count());
 
-Console.WriteLine(newPark.GetParkingSpots().Count);
+// new spot has a reference to the new park
+Console.WriteLine(newSpot.CarPark == newPark);
+
+// new park has a reference to the new spot
+Console.WriteLine(newPark.GetParkingSpots().First() == newSpot);
+

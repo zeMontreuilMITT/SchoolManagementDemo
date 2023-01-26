@@ -14,6 +14,8 @@ namespace SchoolManagementDemo
         public void AddParkingSpot(ParkingSpot parkingSpot)
         {
             _parkingSpots.Add(parkingSpot);
+            // bi-directional relationship -- set this CarPark as the parking spot's property
+            parkingSpot.SetCarPark(this);
         }
 
         // expose a COPY of our list (not a reference)
@@ -28,8 +30,6 @@ namespace SchoolManagementDemo
             // create a new hashset of the parking spots that is a copy of the original hashset, so that the original cannot be modified with this Get Method
             return spotReferenceCopies;
         }
-
-
 
         private int _capacity;
         public int Capacity { get { return _capacity; } }
