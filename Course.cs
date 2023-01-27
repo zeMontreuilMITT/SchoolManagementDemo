@@ -71,7 +71,10 @@ namespace SchoolManagementDemo
         {
             _students.Add(student);
         }
-
+        public void RemoveStudentFromCourse(Student student)
+        {
+            _students.Remove(student);
+        }
 
         public Course (int courseId, string title, int capacity)
         {

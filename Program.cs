@@ -19,8 +19,17 @@ Student Jimmy = new Student(1000, "Jimmy", "Smith");
 
 // something outside of the objects creating the relationship between them
 
-RegisterStudent(Jimmy, Software);
-Console.WriteLine(Jimmy.Course.Title);
+try
+{
+    DeregisterStudent(Jimmy, Software);
+    RegisterStudent(Jimmy, Software);
+    Console.WriteLine(Jimmy.Course.Title);
+    Console.WriteLine(Jimmy.Course.Title);
+} catch (Exception ex)
+{
+    Console.WriteLine(ex.Message.ToString());
+}
+
 
 void RegisterStudent(Student student, Course course)
 {
@@ -38,4 +47,21 @@ void RegisterStudent(Student student, Course course)
     {
         throw new Exception($"Student with id {student.StudentId} already registered in Course {course.Title}");
     }
+}
+void DeregisterStudent(Student student, Course course)
+{
+    // ensure the student is registered in the course
+    if(student.Course.CourseId == course.CourseId 
+        && course.GetStudentInCourse(student.StudentId) == student) { 
+        
+        // remove student from course
+        course.RemoveStudentFromCourse(student);
+        // remove course from student
+        student.Course = null;
+    }
+    else
+    {
+        throw new Exception($"Student with ID {student.StudentId} not registered in Course {course.Title}");
+    }
+
 }
