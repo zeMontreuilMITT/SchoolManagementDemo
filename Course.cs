@@ -8,89 +8,58 @@ namespace SchoolManagementDemo
 {
     public class Course
     {
-        private int _duration;
-        public int Duration
+        private int _courseId;
+        // readonly -- only define at start
+        public int CourseId { get { return _courseId; } }
+        private void _setCourseId(int courseId)
         {
-            get { return _duration; }
-            set
+            if(courseId > 99)
             {
-                if (value > 0)
-                {
-                    _duration = value;
-                }
-                else
-                {
-                    throw new Exception("Duration must exceed zero");
-                }
-            }
-        }
-
-
-        private string _name;
-        public string Name
-        {
-            get { return _name; }
-            set
-            {
-                if (value.Length < 2)
-                {
-                    throw new Exception("Name must have more than one character.");
-                }
-                else
-                {
-                    _name = value;
-                }
-            }
-        }
-
-
-        private int _credits;
-        public int Credits
-        {
-            get { return _credits; }
-            set
-            {
-                if (value > 0)
-                {
-                    _credits = value;
-                }
-                else if (value > MaxCredits)
-                {
-                    throw new Exception($"Credits cannot exceed maximum of {MaxCredits}");
-                }
-                else
-                {
-                    throw new Exception("Duration must exceed zero");
-
-                }
-            }
-        }
-
-        private static int MaxCredits = 6;
-
-        // easier to work with private Collection fields using public methods rather than public properties
-        private Dictionary<Student, int> Students = new Dictionary<Student, int>();
-        public void RegisterStudent(Student student)
-        {
-            string studentName = student.Name;
-
-            if (GetStudentByName(studentName) == null)
-            {
-                // course has Dictionary of students
-                Students.Add(student, 0);
-                // student has reference to their course
-                student.Course = this;
+                _courseId = courseId;
             }
             else
             {
-                throw new Exception("Student already registered");
+                throw new Exception("Course ID should be number greater than 100");
             }
         }
-        public Student? GetStudentByName(string name)
+
+
+        private string _title;
+        public string Title { get { return _title; } }
+        private void _setTitle(string title)
         {
-            foreach (Student s in Students.Keys)
+            if(title.Length > 2)
             {
-                if (s.Name.Equals(name))
+                _title = title; 
+            } else
+            {
+                throw new Exception("Title should be three or more characters.");
+            }
+        }
+
+
+        private int _capacity;
+        public int Capacity { get { return _capacity; } }
+        private void _setCapacity(int capacity)
+        {
+            if(capacity > 0)
+            {
+                _capacity = capacity;
+            }
+            else
+            {
+                throw new Exception("Capacity must be greater than zero.");
+            }
+        }
+
+        // one course contains many students
+        private HashSet<Student> _students = new HashSet<Student>();
+        // get method exposes entire collection -- make specific methods instead
+        public Student? GetStudentInCourse(int studentId)
+        {
+            foreach(Student s in _students)
+            {
+                if(s.StudentId == studentId)
                 {
                     return s;
                 }
@@ -98,16 +67,17 @@ namespace SchoolManagementDemo
 
             return null;
         }
-        public Dictionary<Student, int> GetStudentList()
+        public void AddStudentToCourse(Student student)
         {
-            return Students;
+            _students.Add(student);
         }
 
-        public Course(int duration, string name, int credits)
+
+        public Course (int courseId, string title, int capacity)
         {
-            Duration = duration;
-            Name = name;
-            Credits = credits;
+            _setCourseId(courseId);
+            _setTitle(title);
+            _setCapacity(capacity);
         }
     }
 }

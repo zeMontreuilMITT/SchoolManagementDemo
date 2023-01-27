@@ -1,23 +1,41 @@
-﻿using SchoolManagementDemo;
+﻿// Create a system in which Students can register for Courses
+// A student may only take one Course, where a Course can have many students
 
-try
+// Student Class
+// Course Class
+
+// one-to-many relationship
+using SchoolManagementDemo;
+
+Course Software = new Course(200, "Software Developer", 30);
+Student Jimmy = new Student(1000, "Jimmy", "Smith");
+
+// a course can have many students in it
+// and a student can take one course
+// one-to-many relationship (one course, many students)
+
+// "one" component needs a collection of the many (course needs a collection of students)
+// "many" component needs a property for the "one" (student needs a property of Course)
+
+// something outside of the objects creating the relationship between them
+
+RegisterStudent(Jimmy, Software);
+Console.WriteLine(Jimmy.Course.Title);
+
+void RegisterStudent(Student student, Course course)
 {
-    Course software = new Course(10, "Software Developer", 6);
+    // look to see if a student is already registered in a course
+    // search for the student in the course's student list
+    if(course.GetStudentInCourse(student.StudentId) == null)
+    {
+        // if not, add that student to the course's student list
+        course.AddStudentToCourse(student);
 
-    Student phil = new Student("Phil Wiggins", new DateTime(1991, 10, 10), "Spain");
-    Student bob = new Student("Bob Wiggins", new DateTime(1991, 10, 10), "Spain");
-    Student harry = new Student("Harry Wiggins", new DateTime(1991, 10, 10), "Spain");
-
-    // "BIDIRECTIONAL relationship" -- both objects can refer to each other
-
-    software.RegisterStudent(phil);
-    software.RegisterStudent(bob);
-    software.RegisterStudent(harry);
-
-    Console.WriteLine(software.GetStudentList().Keys.Count);
-    Console.WriteLine($"{bob.Name} is registered in the course {bob.Course.Name} with {bob.Course.GetStudentList().Keys.Count} other students.");
-
-} catch(Exception ex)
-{
-    Console.WriteLine(ex.Message);
+        // set the course as the student's currently registered course
+        student.Course = course;
+    }
+    else
+    {
+        throw new Exception($"Student with id {student.StudentId} already registered in Course {course.Title}");
+    }
 }

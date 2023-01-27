@@ -6,79 +6,77 @@ using System.Threading.Tasks;
 
 namespace SchoolManagementDemo
 {
-    class Student
+    public class Student
     {
-        private string _name;
-        public string Name
+        private int _studentId;
+        public int StudentId { get { return _studentId; } }
+        private void _setStudentId(int studentId)
         {
-            get { return _name; }
+            if(studentId > 0)
+            {
+                _studentId = studentId;
+            } else
+            {
+                throw new Exception("Student ID must be greater than zero.");
+            }
+        }
+
+
+        private string _firstName;
+        public string FirstName
+        {
+            get { return _firstName; }
             set
             {
-                if (value.Length < 2)
+                if (value.Length > 0)
                 {
-                    throw new Exception("Name must have more than one character.");
+                    _firstName = value;
                 }
                 else
                 {
-                    _name = value;
+                    throw new Exception("Value cannot be empty.");
                 }
             }
         }
 
-        // only initialized in Constructor, readonly
-        private DateTime _birthdate;
-        public DateTime Birthdate { get { return _birthdate; } }
 
-        private string _nationality;
-        public string Nationality { get { return _nationality; } }
-
-        /// <summary>
-        /// One-to-many relationship
-        /// Many students can each take one course
-        /// One course can have many students
-        /// </summary>
-        private Course? _course;
-        public Course? Course
+        private string _lastName;
+        public string LastName
         {
-            get { return _course; }
+            get { return _lastName; }
             set
             {
-                if (_course == null)
+                if (value.Length > 0)
                 {
-                    _course = value;
+                    _lastName = value;
                 }
                 else
                 {
-                    throw new Exception($"Student already registered in Course {_course.Name}");
+                    throw new Exception("Value cannot be empty.");
                 }
             }
         }
 
-        public Student(string name, DateTime birthDate, string nationality)
+        // many students can each take one course
+        public Course Course { get; set; }
+
+
+        // === CONSTRUCTORS ===
+        public Student(int studentId)
         {
-            Name = name;
+            _setStudentId(studentId);
+        }
 
-            // validate age is less than 100
-            DateTime currentDate = DateTime.Now;
-            TimeSpan span = currentDate - birthDate;
-            if (span.Days / 365 > 100)
-            {
-                throw new Exception("Birthdate cannot exceed 100 years prior.");
-            }
-            else
-            {
-                _birthdate = birthDate;
-            }
+        public Student(int studentId, string firstName, string lastName)
+        {
+            _setStudentId(studentId);
 
-            // validate nationality
-            if (nationality.Length < 2)
-            {
-                throw new Exception("Nationality input should be greater than one character");
-            }
-            else
-            {
-                _nationality = nationality;
-            }
+            // if we define public set methods on properties, we should ONLY use those to change the value of a field, so that we use their validation
+            FirstName = firstName;
+            LastName = lastName;
+
+            // if we use a field to change a value, we do not validate
+            // avoid direct assignment to a field (e.g. _lastName = lastName)
         }
     }
 }
