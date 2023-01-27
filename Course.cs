@@ -69,7 +69,14 @@ namespace SchoolManagementDemo
         }
         public void AddStudentToCourse(Student student)
         {
-            _students.Add(student);
+            if(_students.Count < Capacity)
+            {
+                _students.Add(student);
+            }
+            else
+            {
+                throw new Exception($"Course is at enrolment capacity {Capacity}");
+            }
         }
         public void RemoveStudentFromCourse(Student student)
         {
