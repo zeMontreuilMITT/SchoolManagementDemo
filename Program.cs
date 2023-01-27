@@ -58,6 +58,7 @@ void DeregisterStudent(Student student, Course course)
         course.RemoveStudentFromCourse(student);
         // remove course from student
         student.Course = null;
+        student.RemoveGrade();
     }
     else
     {
