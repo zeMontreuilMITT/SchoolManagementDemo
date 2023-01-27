@@ -21,10 +21,10 @@ Student Jimmy = new Student(1000, "Jimmy", "Smith");
 
 try
 {
-    DeregisterStudent(Jimmy, Software);
     RegisterStudent(Jimmy, Software);
-    Console.WriteLine(Jimmy.Course.Title);
-    Console.WriteLine(Jimmy.Course.Title);
+    Console.WriteLine(Jimmy.DateRegistered);
+    DeregisterStudent(Jimmy, Software);
+    Console.WriteLine(Jimmy.DateRegistered);
 } catch (Exception ex)
 {
     Console.WriteLine(ex.Message.ToString());
@@ -42,6 +42,7 @@ void RegisterStudent(Student student, Course course)
 
         // set the course as the student's currently registered course
         student.Course = course;
+        student.DateRegistered = DateTime.Now;
     }
     else
     {
@@ -59,6 +60,7 @@ void DeregisterStudent(Student student, Course course)
         // remove course from student
         student.Course = null;
         student.RemoveGrade();
+        student.DateRegistered = null;
     }
     else
     {

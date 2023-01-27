@@ -81,6 +81,15 @@ namespace SchoolManagementDemo
         }
 
 
+        private DateTime? _dateRegistered;
+        public DateTime? DateRegistered
+        {
+            get { return _dateRegistered; }
+            set { _dateRegistered = value; }
+        }
+
+
+
         // === CONSTRUCTORS ===
         public Student(int studentId)
         {
