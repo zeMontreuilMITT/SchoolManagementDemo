@@ -58,8 +58,7 @@ namespace SchoolManagementDemo
         }
 
         // many students can each take one course
-        public Enrolment CurrentEnrolment { get; set; }
-
+        public HashSet<Enrolment> CurrentEnrolments = new HashSet<Enrolment>();
 
 
         private DateTime? _dateRegistered;

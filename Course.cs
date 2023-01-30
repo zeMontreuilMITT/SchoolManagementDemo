@@ -65,6 +65,11 @@ namespace SchoolManagementDemo
             HashSet<Enrolment> setCopy = _enrolments.ToHashSet();
             return setCopy;
         }
+
+        public void RemoveEnrolment(Enrolment enrolment)
+        {
+            _enrolments.Remove(enrolment);
+        }
         
 
         public Course (int courseId, string title, int capacity)
